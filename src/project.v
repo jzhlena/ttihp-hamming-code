@@ -39,23 +39,23 @@ module tt_um_hamming_top (
   // declare signals for outputs
   wire [7:0] encoded_code;
   wire [7:0] decoded_data;
-  wire [3:0] syndrome;
+  wire [2:0] syndrome;
   wire [1:0] errors;
 
   hamming_encoder hamming_encoder_inst (
-      .ui_in(data_in[3:0]),    // 4-bit dataword input
-      .uo_out(encoded_code) // Output encoded code
+      .data_in(data_in[3:0]),    // 4-bit dataword input
+      .code_out(encoded_code) // Output encoded code
   );
 
   hamming_decoder hamming_decoder_inst (
-      .ui_in(data_in[7:0]),   // 8-bit codeword input
-      .uo_out(decoded_data),  // Output decoded data
-      .syndrome(syndrome),    // Output syndrome bits
+      .code_in(data_in[7:0]),   // 8-bit codeword input
+      .code_out(decoded_data),  // Output decoded data
+      .error_location(syndrome),    // Output syndrome bits
       .error_flag(errors)     // Output error bits
   );
 
   // State machine to control the operation
-  wire start = ui_in[0]; //?
+  wire start = ui_in[0];
 
   always @(posedge clk or negedge rst_n) 
   begin
@@ -104,7 +104,7 @@ module tt_um_hamming_top (
     end else begin
       case (curr_state)
         IN1: begin
-          mode_select <= ui_in[1]; // 0 for encode, 1 for decode
+          mode_select <= ui_in[0]; // 0 for encode, 1 for decode
         end
         IN2: begin
           // Load input data for encoding or decoding
@@ -136,11 +136,8 @@ module tt_um_hamming_top (
           if (mode_select == 0) begin
             data_out <= encoded_code;
           end else begin
-            data_out <= {2'b0, syndrome, errors};
+            data_out <= {3'b0, syndrome, errors};
           end
-        end
-        default: begin
-          data_out <= 8'b0;
         end
       endcase
     end
