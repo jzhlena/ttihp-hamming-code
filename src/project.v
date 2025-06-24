@@ -39,7 +39,7 @@ module tt_um_hamming_top (
   // declare signals for outputs
   wire [7:0] encoded_code;
   wire [7:0] decoded_data;
-  wire [2:0] syndrome;
+  wire [3:0] syndrome;
   wire [1:0] errors;
 
   hamming_encoder hamming_encoder_inst (
@@ -136,7 +136,7 @@ module tt_um_hamming_top (
           if (mode_select == 0) begin
             data_out <= encoded_code;
           end else begin
-            data_out <= {3'b0, syndrome, errors};
+            data_out <= {2'b0, syndrome, errors};
           end
         end
         default: begin
