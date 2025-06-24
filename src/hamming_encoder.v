@@ -25,6 +25,6 @@ module hamming_encoder (
     assign c_all = c0 ^ c1 ^ c2 ^ ui_in[3] ^ ui_in[2] ^ ui_in[1] ^ ui_in[0]; // all data and calculated parity bits
     
     // 8 7 6 5 4 3 2 1
-    assign uo_out = {c_all, ui_in[3], ui_in[2], ui_in[1], c2, ui_in[0], c1, c0,}
+    assign uo_out = {c_all, ui_in[3], ui_in[2], ui_in[1], c2, ui_in[0], c1, c0};
 
 endmodule;
