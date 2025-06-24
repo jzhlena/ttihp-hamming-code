@@ -48,21 +48,21 @@ module hamming_decoder (
 
     assign error_out = {3'b000, error_location, error_flag};
 
-    // output selector toggle
-    reg toggle;
+    // // output selector toggle
+    // reg toggle;
 
-    // switches between code_out and error_out every cycle
-    always @(posedge clk or negedge rst_n) begin
-        if (!rst_n) begin
-            toggle <= 1'b0;
-            uo_out <= 8'b0;
-        end else begin
-            toggle <= ~toggle;
-            if (toggle)
-                uo_out <= code_out;   // output corrected code on one cycle
-            else
-                uo_out <= error_out;  // output error info on next cycle
-        end
-    end
+    // // switches between code_out and error_out every cycle
+    // always @(posedge clk or negedge rst_n) begin
+    //     if (!rst_n) begin
+    //         toggle <= 1'b0;
+    //         uo_out <= 8'b0;
+    //     end else begin
+    //         toggle <= ~toggle;
+    //         if (toggle)
+    //             uo_out <= code_out;   // output corrected code on one cycle
+    //         else
+    //             uo_out <= error_out;  // output error info on next cycle
+    //     end
+    // end
 
 endmodule
