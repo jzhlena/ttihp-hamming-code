@@ -1,4 +1,9 @@
+/*
+ * Copyright (c) 2025 Cynthia Ma, Helena Zhang
+ * SPDX-License-Identifier: Apache-2.0
+ */
 
+`default_nettype none
 
 module hamming_top (
     input  wire [7:0] ui_in,    // Dedicated inputs
@@ -11,4 +16,14 @@ module hamming_top (
     input  wire       rst_n     // reset_n - low to reset
 );
 
+    wire [3:0] data_in = ui_in[3:0]; // 4-bit data for encoder
+    wire [7:0] code_in = ui_in[7:0]; // 8-bit code for decoder
+
+    // declare signals for outputs
+    wire [7:0] encoded_code;
+    wire [7:0] decoded_data;
+
+
     //
+
+endmodule
