@@ -143,7 +143,6 @@ module tt_um_hamming_top (
   // List all unused inputs to prevent warnings
   wire _unused = &{ena, uio_in, uio_out, uio_oe, 1'b0};
   assign uio_oe = 8'b0;
-  assign uio_out = 8'b0;
-  assign uio_in = 8'b0; // Assign unused IO inputs to 0 to prevent warnings
+  assign uio_out = 8'b0; // Assign unused IO inputs to 0 to prevent warnings
 
 endmodule
