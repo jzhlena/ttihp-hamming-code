@@ -27,7 +27,8 @@ module hamming_decoder (
     assign c0 = code_in[2] ^ code_in[4] ^ code_in[6]; // d0, d1, d3
     assign c1 = code_in[2] ^ code_in[5] ^ code_in[6]; // d0, d2, d3
     assign c2 = code_in[4] ^ code_in[5] ^ code_in[6]; // d1, d2, d3
-    assign c_all = c0 ^ c1 ^ c2 ^ code_in[2] ^ code_in[4] ^ code_in[5] ^ code_in[6]; // all data and calculated parity bits
+    // assign c_all = c0 ^ c1 ^ c2 ^ code_in[2] ^ code_in[4] ^ code_in[5] ^ code_in[6]; // all data and calculated parity bits
+    assign c_all = ^code_in[6:0];
 
     assign syndrome[0] = c0 ^ code_in[0];
     assign syndrome[1] = c1 ^ code_in[1];
@@ -41,7 +42,7 @@ module hamming_decoder (
 
     // single bit error correction
     assign code_out = (syndrome[2:0] != 3'b000) ?
-                      (code_in ^ (8'b00000001 << (7 - syndrome[2:0]))) : 
+                      (code_in ^ (8'b00000001 << (syndrome[2:0] - 1))) : 
                       code_in;
 
 
