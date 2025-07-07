@@ -6,6 +6,27 @@
 ## Description
 The project aims to design a digital circuit block that implements the Hamming code. It will consist of an encoder that encodes 4-bit data inputs into 8-bit code-words, and a decoder that will receive 8-bit codewords to detect and correct single-bit errors. It will also be able to detect 2-bit errors.
 
+| Direction               | State | Mode | Pin          | Width | Description                                           |
+|-------------------------|:-----:|:----:|:------------:|:-----:|:-----------------------------------------------------|
+| **Input** ui_in[7:0]    | IDLE  |  –   | ui_in[0]     | 1     | start                                                 |
+|                         | IN1   |  –   | ui_in[0]     | 1     | mode_select: 0 = encode, 1 = decode                  |
+|                         | IN2   |  0   | ui_in[3:0]   | 4     | data_in: 4-bit dataword                               |
+|                         |       |  1   | ui_in[7:0]   | 8     | code_in: 8-bit codeword                               |
+| **Output** uo_out[7:0]  | OUT1  |  0   | uo_out[7:0]  | 8     | code_out: 8-bit codeword                              |
+|                         |       |  1   | uo_out[7:0]  | 8     | code_out: corrected codeword                          |
+|                         | OUT2  |  0   | uo_out[7:0]  | 8     | code_out                                              |
+|                         |       |  1   | uo_out[1:0]  | 2     | error_flags: 00 = error free, 01 = 1-bit error, 10 = 2-bit error |
+|                         |       |      | uo_out[4:2]  | 3     | error_location (of 1-bit error)                       |
+
+
+| Error_flag | Description                                                |
+|------------|------------------------------------------------------------|
+| `00`       | No error; position – don’t care                             |
+| `01`       | 1 error – `error_position` will be 0 ≤ x < 8                |
+| `10`       | 2-bit error detected; error position – don’t care           |
+| `11`       | N/A – will not happen                                       |
+
+
 ## Block Diagram
 ![block diagram 1](block_diagram_1.png "block diagram")
 ![alternative block diagrams](block_diagram_2.png "block diagrams with internal signals")
