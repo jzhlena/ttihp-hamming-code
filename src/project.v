@@ -111,6 +111,7 @@ module tt_um_hamming_top (
           end
         end
       endcase
+      // $display("Time=%0t | State=%b | mode_select=%b | data_in=%b | encoded_code=%b | decoded_data=%b | syndrome=%b | errors=%b | data_out=%b", $time, curr_state, mode_select, data_in, encoded_code, decoded_data, syndrome, errors, data_out);
     end
   end
 
@@ -119,7 +120,9 @@ module tt_um_hamming_top (
   begin
     if (!rst_n) begin
       data_out <= 8'b0;
+      output_valid <= 0;
     end else begin
+      output_valid <= 0;
       case (curr_state)
         OUT1: begin
           if (mode_select == 0) begin
@@ -127,6 +130,7 @@ module tt_um_hamming_top (
           end else begin
             data_out <= decoded_data;
           end
+          output_valid <= 1;
         end
         OUT2: begin
           if (mode_select == 0) begin
@@ -134,10 +138,14 @@ module tt_um_hamming_top (
           end else begin
             data_out <= {3'b0, syndrome, errors};
           end
+          output_valid <= 1;
         end
       endcase
+            // $display("Time=%0t | State=%b | mode_select=%b | data_in=%b | encoded_code=%b | decoded_data=%b | syndrome=%b | errors=%b | data_out=%b", $time, curr_state, mode_select, data_in, encoded_code, decoded_data, syndrome, errors, data_out);
     end
   end
+
+  // assign uo_out = output_valid ? data_out : 8'b0;
 
 
   // List all unused inputs to prevent warnings
