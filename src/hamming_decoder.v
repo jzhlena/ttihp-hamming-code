@@ -36,14 +36,19 @@ module hamming_decoder (
     assign syndrome[3] = c_all ^ code_in[7];
 
     assign error_location = syndrome[2:0];
-    assign error_flag = (syndrome[3] && syndrome[2:0] != 3'b000) ? 2'b01 :  // single-bit error
-                        (syndrome[3] && syndrome[2:0] == 3'b000) ? 2'b10 : // double-bit error
-                                                                   2'b0;   // no error
+    assign error_flag = (syndrome[3] == 1'b1 && syndrome[2:0] != 3'b000) ? 2'b01 :  // single-bit error 
+                    (syndrome[3] == 1'b1 && syndrome[2:0] == 3'b000) ? 2'b10 : // double-bit error
+                                                                         2'b00; // no error
 
-    // single bit error correction
-    assign code_out = (syndrome[2:0] != 3'b000) ?
-                      (code_in ^ (8'b00000001 << (syndrome[2:0] - 1))) : 
-                      code_in;
+
+    wire [7:0] correction_mask;
+    assign correction_mask = (syndrome[2:0] != 3'b000) ?
+                         (8'b00000001 << (syndrome[2:0] - 1)) :
+                         8'b00000000;
+
+    assign code_out = (error_flag == 2'b01) ?
+                  (code_in ^ correction_mask) :
+                  code_in;
 
 
     // assign error_out = {3'b000, error_location, error_flag};

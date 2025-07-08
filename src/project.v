@@ -21,11 +21,11 @@ module tt_um_hamming_top (
   // state macros
   localparam
     IDLE      = 3'b000,
-    IN1       = 3'b010,
-    IN2       = 3'b011,
-    CALCULATE = 3'b100,
-    OUT1      = 3'b101,
-    OUT2      = 3'b110;
+    IN1       = 3'b001,
+    IN2       = 3'b010,
+    CALCULATE = 3'b011,
+    OUT1      = 3'b100,
+    OUT2      = 3'b101;
 
   // resgisters used in state machine
   reg [2:0] curr_state;
@@ -35,6 +35,7 @@ module tt_um_hamming_top (
   reg [7:0] data_out;
 
   assign uo_out = data_out;
+
 
   // declare signals for outputs
   wire [7:0] encoded_code;
