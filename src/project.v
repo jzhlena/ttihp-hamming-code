@@ -21,11 +21,11 @@ module tt_um_hamming_top (
   // state macros
   localparam
     IDLE      = 3'b000,
-    IN1       = 3'b010,
-    IN2       = 3'b011,
-    CALCULATE = 3'b100,
-    OUT1      = 3'b101,
-    OUT2      = 3'b110;
+    IN1       = 3'b001,
+    IN2       = 3'b010,
+    CALCULATE = 3'b011,
+    OUT1      = 3'b100,
+    OUT2      = 3'b101;
 
   // resgisters used in state machine
   reg [2:0] curr_state;
@@ -35,6 +35,7 @@ module tt_um_hamming_top (
   reg [7:0] data_out;
 
   assign uo_out = data_out;
+
 
   // declare signals for outputs
   wire [7:0] encoded_code;
@@ -111,6 +112,7 @@ module tt_um_hamming_top (
           end
         end
       endcase
+      // $display("Time=%0t | State=%b | mode_select=%b | data_in=%b | encoded_code=%b | decoded_data=%b | syndrome=%b | errors=%b | data_out=%b", $time, curr_state, mode_select, data_in, encoded_code, decoded_data, syndrome, errors, data_out);
     end
   end
 
@@ -136,6 +138,7 @@ module tt_um_hamming_top (
           end
         end
       endcase
+            // $display("Time=%0t | State=%b | mode_select=%b | data_in=%b | encoded_code=%b | decoded_data=%b | syndrome=%b | errors=%b | data_out=%b", $time, curr_state, mode_select, data_in, encoded_code, decoded_data, syndrome, errors, data_out);
     end
   end
 
@@ -144,6 +147,6 @@ module tt_um_hamming_top (
   wire _unused = &{ena, uio_in, uio_out, uio_oe, 1'b0};
   assign uio_oe = 8'b0;
   assign uio_out = 8'b0;
-  assign uio_in = 8'b0; // Assign unused IO inputs to 0 to prevent warnings
+  // assign uio_in = 8'b0; // Assign unused IO inputs to 0 to prevent warnings
 
 endmodule

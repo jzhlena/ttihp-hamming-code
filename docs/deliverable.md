@@ -58,6 +58,9 @@ The project aims to design a digital circuit block that implements the Hamming c
 
 - June 27: transferred initial documentation/resources from google doc
 
+- ...
+- July 8: debugged decoder & completed test cases outlined in test plan
+
 ### TODO: next steps 
     1. Complete info.md documentation
         - check repo & google doc history and log activities/timelines

@@ -16,12 +16,6 @@ module hamming_decoder (
     wire c_all, c2, c1, c0;
     wire [3:0] syndrome;
 
-    
-    // 432, error location, 10, error flag
-    // wire [7:0] error_out;
-    // wire [2:0] error_location;
-    // wire [1:0] error_flag;
-
     //code_in = [c_all, d3, d2, d1, c2, d0, c1, c0]
 
     assign c0 = code_in[2] ^ code_in[4] ^ code_in[6]; // d0, d1, d3
@@ -35,34 +29,22 @@ module hamming_decoder (
     assign syndrome[2] = c2 ^ code_in[3];
     assign syndrome[3] = c_all ^ code_in[7];
 
-    assign error_location = syndrome[2:0];
-    assign error_flag = (syndrome[3] && syndrome[2:0] != 3'b000) ? 2'b01 :  // single-bit error
-                        (syndrome[3] && syndrome[2:0] == 3'b000) ? 2'b10 : // double-bit error
-                                                                   2'b0;   // no error
+    assign error_flag = (syndrome[3] == 1'b1)                            ? 2'b01 :  // single-bit error 
+                        (syndrome[3] == 1'b0 && syndrome[2:0] != 3'b000) ? 2'b10 : // double-bit error
+                                                                           2'b00; // no error
 
-    // single bit error correction
-    assign code_out = (syndrome[2:0] != 3'b000) ?
-                      (code_in ^ (8'b00000001 << (syndrome[2:0] - 1))) : 
+    assign error_location = error_flag == 2'b10 ? 3'b000 : syndrome[2:0]; // double-bit error, no correction possible
+
+    wire [7:0] correction_mask;
+    assign correction_mask = (syndrome[2:0] != 3'b000) ?
+                         (8'b00000001 << (syndrome[2:0] - 1)) :
+                         8'b00000000;
+
+    assign code_out = (error_flag == 2'b01) ?
+                        ((syndrome[2:0] == 3'b000) ?
+                         (code_in ^ 8'b10000000) : 
+                         (code_in ^ correction_mask)
+                        ) :
                       code_in;
-
-
-    // assign error_out = {3'b000, error_location, error_flag};
-
-    // // output selector toggle
-    // reg toggle;
-
-    // // switches between code_out and error_out every cycle
-    // always @(posedge clk or negedge rst_n) begin
-    //     if (!rst_n) begin
-    //         toggle <= 1'b0;
-    //         uo_out <= 8'b0;
-    //     end else begin
-    //         toggle <= ~toggle;
-    //         if (toggle)
-    //             uo_out <= code_out;   // output corrected code on one cycle
-    //         else
-    //             uo_out <= error_out;  // output error info on next cycle
-    //     end
-    // end
 
 endmodule
