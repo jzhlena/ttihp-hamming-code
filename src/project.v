@@ -23,9 +23,8 @@ module tt_um_hamming_top (
     IDLE      = 3'b000,
     IN1       = 3'b001,
     IN2       = 3'b010,
-    CALCULATE = 3'b011,
-    OUT1      = 3'b100,
-    OUT2      = 3'b101;
+    OUT1      = 3'b011,
+    OUT2      = 3'b100;
 
   // resgisters used in state machine
   reg [2:0] curr_state;
@@ -99,6 +98,9 @@ module tt_um_hamming_top (
       data_in <= 8'b0;
       mode_select <= 0;
     end else begin
+      // by default retain previous values - attempt to fix inferred latch
+      // data_in <= data_in;
+      // mode_select <= mode_select;
       case (curr_state)
         IN1: begin
           mode_select <= ui_in[0]; // 0 for encode, 1 for decode
@@ -122,6 +124,7 @@ module tt_um_hamming_top (
     if (!rst_n) begin
       data_out <= 8'b0;
     end else begin
+      data_out <= data_out; // attempt to fix inferred latch, retain prev values by default
       case (curr_state)
         OUT1: begin
           if (mode_select == 0) begin
