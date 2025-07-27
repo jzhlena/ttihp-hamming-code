@@ -113,14 +113,51 @@ F - error_flag
 - July 13: revised block diagram
 - July 21: completed all test cases, updated documentations
 
-### TODO: next steps 
-    1. Complete documentations
-        - check repo & google doc history and log activities/timelines
-        - fix timing diagram
+---
+#### Teanwork / Division of Responsibilities
 
-    2. Test cases
-        - complete testing in all cases
+We held regular meetings to discuss design choices, debug issues, and review each other's code. Both partners contributed to testing and documentation, ensuring a robust and well-documented final project.
 
-    3. (optional) run performance evaluation/testing
+- **Helena:**  
+  - Drafted and implemented the encoder and decoder logic modules
+  - Developed and improved the testbench and test cases
+  - Contributed to documentation and timing diagrams
 
-    4. (optional) inferred latch problem
+- **Cynthia:**  
+  - Designed and implemented the FSM and state transitions in the top-level module
+  - Led debugging and integration efforts to ensure the project runs correctly and produces valid outputs
+  - Contributed to documentation and block diagrams
+
+OR 
+
+  The project was highly collaborative, with both partners contributing to all major components. While Helena primarily drafted and implemented the encoder and decoder logic modules, and Cynthia focused on designing the FSM and state transitions in the top-level module (`project.v`), both partners participated in writing and improving the testbench and test cases, as well as documentation and diagrams. Most test cases were written by Helena, with Cynthia contributing to the remainder. Debugging and integration were joint efforts, with regular reviews and shared problem-solving throughout the project.
+
+### Timeline
+
+| Date      | Activity & Contributor(s)                                                                   |
+|-----------|---------------------------------------------------------------------------------------------|
+| May 26-June 6 | Cynthia & Helena: Discussed and drafted project specifications                          |
+| June 7-20 | Helena & Cynthia: updated specifications and added initial diagrams                         |
+| June 23-24| Helena: Implemented initial encoder and decoder modules                                     |
+| June 24   | Cynthia: Drafted FSM design and state transitions & wrote informal test for encoder         |
+| June 27   | Cynthia: Transferred initial documentation/resources to markdown format                     |
+| July 7    | Helena: added test cases for encoder and decoder (no error)                                 |
+| July 8    | Cynthia: Debugged decoder logic, ran tests for single/double error cases                    |
+| July 13   | Cynthia: Revised block diagram and updated documentation                                    |
+| July 15   | Helena: Improved testbench coverage, added edge case tests                                  |
+| July 18   | Helena & Cynthia: Joint debugging session - discussed output timing and register update issues |
+| July 21   | Helena: Finalized all test cases                                                            |
+
+#### Problems Encountered & Solutions
+
+- **FSM Output Timing:**  
+  Output signals were not updating as expected. After reviewing the sequential logic, we realized outputs are only valid after state transitions and clock edges. We added extra clock cycles in the testbench to ensure correct sampling.
+
+- **Decoder Syndrome Calculation:**  
+  Initial syndrome logic did not correctly identify error locations for certain bit flips. Cynthia traced the issue to parity bit mapping and corrected the assignment logic.
+
+- **Multiple Driver Warnings:**  
+  Helena found that multiple assignments to the same wire caused simulation X values. We resolved this by consolidating assignments into a single statement.
+
+- **Testbench Synchronization:**  
+  Both partners worked together to align the testbench with the FSM timing, ensuring inputs and outputs were sampled in the correct states.
