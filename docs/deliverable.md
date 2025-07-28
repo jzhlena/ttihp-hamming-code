@@ -86,6 +86,7 @@ F - error_flag
 ## Timing Diagram
 
 ![timing diagram](timing_diagram_1.png "basic timing diagram")
+<!-- ![timing diagram](image.png "basic timing diagram") -->
 
 ## Test Plan
 #### Test 1 - Check encoding logic
@@ -104,14 +105,7 @@ F - error_flag
 
 
 ## Logs
-- June 23: initialize encoder and decoder logic
-- June 24: implement state machine controller
-- June 27: transferred initial documentation/resources from google doc
-- July 7-8: debugged decoder & wrote test cases outlined in test plan
-- July 13: revised block diagram
-- July 21: completed all test cases, updated documentations
 
----
 #### Teanwork / Division of Responsibilities
 
 We held regular meetings to discuss design choices, debug issues, and review each other's code. Both partners contributed to testing and documentation, ensuring a robust and well-documented final project.
@@ -143,6 +137,7 @@ We held regular meetings to discuss design choices, debug issues, and review eac
 | July 15   | Helena: Improved testbench coverage, added edge case tests                                  |
 | July 18   | Helena & Cynthia: Joint debugging session - discussed output timing and register update issues |
 | July 21   | Helena: Finalized all test cases                                                            |
+| July 28 | Helena & Cynthia: Documentation review + final submission |
 
 #### Problems Encountered & Solutions
 
@@ -151,9 +146,6 @@ We held regular meetings to discuss design choices, debug issues, and review eac
 
 - **Decoder Syndrome Calculation:**  
   Initial syndrome logic did not correctly identify error locations for certain bit flips. Cynthia traced the issue to parity bit mapping and corrected the assignment logic.
-
-- **Multiple Driver Warnings:**  
-  Helena found that multiple assignments to the same wire caused simulation X values. We resolved this by consolidating assignments into a single statement. 
 
 - **Testbench Synchronization:**  
   Both partners worked together to align the testbench with the FSM timing, ensuring inputs and outputs were sampled in the correct states.
