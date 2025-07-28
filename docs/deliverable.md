@@ -104,16 +104,7 @@ F - error_flag
 
 
 ## Logs
-- ... (previous activities to be added)
 
-- June 27: transferred initial documentation/resources from google doc
-
-- ...
-- July 8: debugged decoder & wrote test cases outlined in test plan
-- July 13: revised block diagram
-- July 21: completed all test cases, updated documentations
-
----
 #### Teanwork / Division of Responsibilities
 
 We held regular meetings to discuss design choices, debug issues, and review each other's code. Both partners contributed to testing and documentation, ensuring a robust and well-documented final project.
@@ -147,6 +138,7 @@ OR
 | July 15   | Helena: Improved testbench coverage, added edge case tests                                  |
 | July 18   | Helena & Cynthia: Joint debugging session - discussed output timing and register update issues |
 | July 21   | Helena: Finalized all test cases                                                            |
+| July 27-28| Cynthia: Attempted OpenSTA timing analysis                                                  |
 
 #### Problems Encountered & Solutions
 
