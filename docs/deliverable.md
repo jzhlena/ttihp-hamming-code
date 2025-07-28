@@ -126,8 +126,6 @@ We held regular meetings to discuss design choices, debug issues, and review eac
   - Led debugging and integration efforts to ensure the project runs correctly and produces valid outputs
   - Contributed to documentation and block diagrams
 
-OR 
-
   The project was highly collaborative, with both partners contributing to all major components. While Helena primarily drafted and implemented the encoder and decoder logic modules, and Cynthia focused on designing the FSM and state transitions in the top-level module (`project.v`), both partners participated in writing and improving the testbench and test cases, as well as documentation and diagrams. Most test cases were written by Helena, with Cynthia contributing to the remainder. Debugging and integration were joint efforts, with regular reviews and shared problem-solving throughout the project.
 
 ### Timeline
@@ -155,7 +153,7 @@ OR
   Initial syndrome logic did not correctly identify error locations for certain bit flips. Cynthia traced the issue to parity bit mapping and corrected the assignment logic.
 
 - **Multiple Driver Warnings:**  
-  Helena found that multiple assignments to the same wire caused simulation X values. We resolved this by consolidating assignments into a single statement.
+  Helena found that multiple assignments to the same wire caused simulation X values. We resolved this by consolidating assignments into a single statement. 
 
 - **Testbench Synchronization:**  
   Both partners worked together to align the testbench with the FSM timing, ensuring inputs and outputs were sampled in the correct states.
