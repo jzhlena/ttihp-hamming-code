@@ -3,6 +3,10 @@ read_verilog src/hamming_decoder.v
 read_verilog src/project.v
 
 read_liberty scripts/sky130_fd_sc_hd__tt_025C_1v80.lib
+
 synth -top tt_um_hamming_top
+dfflibmap -liberty scripts/sky130_fd_sc_hd__tt_025C_1v80.lib
 abc -liberty scripts/sky130_fd_sc_hd__tt_025C_1v80.lib
-write_verilog scripts/netlist.v
+
+clean
+write_verilog -noattr scripts/netlist.v
