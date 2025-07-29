@@ -86,6 +86,7 @@ F - error_flag
 ## Timing Diagram
 
 ![timing diagram](timing_diagram_1.png "basic timing diagram")
+<!-- ![timing diagram](image.png "basic timing diagram") -->
 
 ## Test Plan
 #### Test 1 - Check encoding logic
@@ -119,8 +120,6 @@ We held regular meetings to discuss design choices, debug issues, and review eac
   - Led debugging and integration efforts to ensure the project runs correctly and produces valid outputs
   - Contributed to documentation and block diagrams
 
-OR 
-
   The project was highly collaborative, with both partners contributing to all major components. While Helena primarily drafted and implemented the encoder and decoder logic modules, and Cynthia focused on designing the FSM and state transitions in the top-level module (`project.v`), both partners participated in writing and improving the testbench and test cases, as well as documentation and diagrams. Most test cases were written by Helena, with Cynthia contributing to the remainder. Debugging and integration were joint efforts, with regular reviews and shared problem-solving throughout the project.
 
 ### Timeline
@@ -139,17 +138,18 @@ OR
 | July 18   | Helena & Cynthia: Joint debugging session - discussed output timing and register update issues |
 | July 21   | Helena: Finalized all test cases                                                            |
 | July 27-28| Cynthia: Attempted OpenSTA timing analysis                                                  |
+| July 29 | Helena & Cynthia: Documentation review + final submission |
 
 #### Problems Encountered & Solutions
 
 - **FSM Output Timing:**  
-  Output signals were not updating as expected. After reviewing the sequential logic, we realized outputs are only valid after state transitions and clock edges. We added extra clock cycles in the testbench to ensure correct sampling.
+  Output signals were not updating as expected. After reviewing the sequential logic and examining internal signals within each state, we realized outputs are only valid after state transitions and clock edges. We added extra clock cycles in the testbench to ensure correct sampling.
 
 - **Decoder Syndrome Calculation:**  
   Initial syndrome logic did not correctly identify error locations for certain bit flips. Cynthia traced the issue to parity bit mapping and corrected the assignment logic.
 
-- **Multiple Driver Warnings:**  
-  Helena found that multiple assignments to the same wire caused simulation X values. We resolved this by consolidating assignments into a single statement.
-
 - **Testbench Synchronization:**  
   Both partners worked together to align the testbench with the FSM timing, ensuring inputs and outputs were sampled in the correct states.
+
+- **Improper Clearing of Input Registers:**
+  Outputs would occasionally be inconsistent from the expected values, and no matter the input, would always display the value 0b101. Helena traced the issue to lack of reset of input registers between cycles, which caused the IDLE state to be interrupted earlier than intended. This issue was resolved by forcing a reset between each test run.
