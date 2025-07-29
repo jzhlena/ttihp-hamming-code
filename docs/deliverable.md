@@ -137,7 +137,8 @@ We held regular meetings to discuss design choices, debug issues, and review eac
 | July 15   | Helena: Improved testbench coverage, added edge case tests                                  |
 | July 18   | Helena & Cynthia: Joint debugging session - discussed output timing and register update issues |
 | July 21   | Helena: Finalized all test cases                                                            |
-| July 28 | Helena & Cynthia: Documentation review + final submission |
+| July 27-28| Cynthia: Attempted OpenSTA timing analysis                                                  |
+| July 29 | Helena & Cynthia: Documentation review + final submission |
 
 #### Problems Encountered & Solutions
 
