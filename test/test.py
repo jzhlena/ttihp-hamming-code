@@ -19,7 +19,7 @@ test_cases_codeword = [0b00000000, 0b10000111, 0b10011001, 0b00011110, 0b1010101
                                0b10110100, 0b01001011, 0b11001100, 0b11010010, 0b01010101, 0b11100001, 0b01100110, 0b01111000, 0b11111111]
 
 @cocotb.test()
-async def test_project(dut):
+async def test_encoder(dut):
 
     # max clock period = 50 mHz
     # Set the clock period to 50 us (20 KHz)
@@ -27,7 +27,7 @@ async def test_project(dut):
     cocotb.start_soon(clock.start())
 
     # Reset
-    dut._log.info("Reset")
+    # dut._log.info("Reset")
     dut.ena.value = 1
     dut.ui_in.value = 0
     dut.uio_in.value = 0
@@ -41,29 +41,32 @@ async def test_project(dut):
     dut._log.info("Test encoder functionality")
     
     for i in range(len(test_cases_encoder_data)):
-        dut._log.info("Start")
+        # dut._log.info("Start")
         dut.ui_in.value = 1 # start
         await ClockCycles(dut.clk, 1)
 
         # IN1 (mode = 0)
         dut.ui_in.value = 0
         await ClockCycles(dut.clk, 1)
-        print(f"input1: {dut.ui_in.value}")
+        # print(f"input1: {dut.ui_in.value}")
         # print(dut.uo_out.value)
 
         # IN2
         dut.ui_in.value = test_cases_encoder_data[i]
         await ClockCycles(dut.clk, 1)
-        print(f"input2: {dut.ui_in.value}")
+        # print(f"input2: {dut.ui_in.value}")
         # print(dut.uo_out.value)
 
         # OUT1
         await ClockCycles(dut.clk, 2)
-        print(f"Encoded output: {dut.uo_out.value}")
-        print("Encoded testcase: " + bin(test_cases_codeword[i]))
+        # print(f"Encoded output: {dut.uo_out.value}")
+        # print("Encoded testcase: " + bin(test_cases_codeword[i]))
         assert dut.uo_out.value == test_cases_codeword[i]
 
-        
+@cocotb.test()
+async def test_decoder_none(dut):
+    clock = Clock(dut.clk, 50, units="us")
+    cocotb.start_soon(clock.start())
     dut._log.info("=========================================================")
     dut._log.info("Test decoder functionality -- no error")
     
@@ -72,7 +75,7 @@ async def test_project(dut):
         # Reset
         await reset(dut)
         
-        dut._log.info("Start")
+        # dut._log.info("Start")
         
         #START 
         dut.ui_in.value = 0b1 # start
@@ -86,28 +89,33 @@ async def test_project(dut):
         dut.ui_in.value = test_cases_codeword[i] 
         await ClockCycles(dut.clk, 1)
         
-        print(f"input2: {dut.ui_in.value}")
+        # print(f"input2: {dut.ui_in.value}")
         
         await ClockCycles(dut.clk, 2)
         
         
         #OUT1
         # await ClockCycles(dut.clk, 1)
-        print("Encoded testcase: " + bin(test_cases_codeword[i]))
-        print(f"OUT5: {dut.uo_out.value}")
+        # print("Encoded testcase: " + bin(test_cases_codeword[i]))
+        # print(f"OUT5: {dut.uo_out.value}")
         assert dut.uo_out.value == test_cases_codeword[i]
         
         #OUT2
         await ClockCycles(dut.clk, 1)
-        print(f"OUT6: {dut.uo_out.value}")
+        # print(f"OUT6: {dut.uo_out.value}")
         assert dut.uo_out.value == 0b00000000
         
-    await reset(dut)
+    # await reset(dut)
 
+@cocotb.test()
+async def test_decoder_single(dut):
+    clock = Clock(dut.clk, 50, units="us")
+    cocotb.start_soon(clock.start())
     dut._log.info("=========================================================")
     dut._log.info("Test decoder functionality -- single bit error correction")
 
     for i in range(len(test_cases_codeword)):
+        await reset(dut)
         await ClockCycles(dut.clk, 1)
 
         codeword = test_cases_codeword[i]
@@ -117,7 +125,7 @@ async def test_project(dut):
         if (syndrome >= 8): syndrome = 0
         expected_out2 = syndrome << 2 | 0b01
 
-        print(f"Codeword: {bin(codeword)}")
+        # print(f"Codeword: {bin(codeword)}")
         
         #START 
         dut.ui_in.value = 0b1 # start
@@ -126,28 +134,30 @@ async def test_project(dut):
         #IN1
         dut.ui_in.value = 0b1 # mode = 1
         await ClockCycles(dut.clk, 1)
-        print(f"input1: {dut.ui_in.value}")
+        # print(f"input1: {dut.ui_in.value}")
         
         #IN2
         dut.ui_in.value = corrupted_cw
         await ClockCycles(dut.clk, 1)
-        print(f"input2: {dut.ui_in.value}")
+        # print(f"input2: {dut.ui_in.value}")
         
         #OUT1
         await ClockCycles(dut.clk, 2)
-        print(f"OUT1: {dut.uo_out.value}")
+        # print(f"OUT1: {dut.uo_out.value}")
         assert dut.uo_out.value == codeword
         
         #OUT2
         await ClockCycles(dut.clk, 1)
-        print(f"OUT2: {dut.uo_out.value}")
+        # print(f"OUT2: {dut.uo_out.value}")
         assert dut.uo_out.value == expected_out2
 
-        await reset(dut)
-
     
-    await reset(dut)
+    # await reset(dut)
 
+@cocotb.test()
+async def test_decoder_double(dut):
+    clock = Clock(dut.clk, 50, units="us")
+    cocotb.start_soon(clock.start())
     dut._log.info("=========================================================")
     dut._log.info("Test decoder functionality -- double bit error detection")
     
@@ -169,36 +179,22 @@ async def test_project(dut):
                 #IN2
                 dut.ui_in.value = value
                 await ClockCycles(dut.clk, 1)
-                print(f"input2: {dut.ui_in.value}")
-                print(f"Original codeword: {bin(value)}")
+                # print(f"input2: {dut.ui_in.value}")
+                # print(f"Original codeword: {bin(value)}")
                 
                 #OUT1
                 await ClockCycles(dut.clk, 2)
-                print(f"OUT1: {dut.uo_out.value}")
+                # print(f"OUT1: {dut.uo_out.value}")
                 assert dut.uo_out.value == value
                 
                 #OUT2
                 await ClockCycles(dut.clk, 1)
-                print(f"OUT2: {dut.uo_out.value}")
+                # print(f"OUT2: {dut.uo_out.value}")
                 assert dut.uo_out.value == 0b00000010
-
-    # codeword = test_cases_codeword[2]
-    # corrupted_cw = flip_bit(codeword, 2)
-    # corrupted_cw = flip_bit(corrupted_cw, 5)
-    
-    # #START 
-    # dut.ui_in.value = 0b1 # start
-    # await ClockCycles(dut.clk, 1)
-    
-    # #IN1
-    # dut.ui_in.value = 0b1 # mode = 1
-    # await ClockCycles(dut.clk, 1)
-
-
 
         
 async def reset(dut, timeout=10):
-    dut._log.info("Reset")
+    # dut._log.info("Reset")
     dut.ena.value = 1
     dut.ui_in.value = 0
     dut.uio_in.value = 0
