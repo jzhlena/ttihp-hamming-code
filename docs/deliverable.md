@@ -102,6 +102,8 @@ F - error_flag
 #### Test 4 - double error detection
   - Introduce double-bit errors in 8-bit, decode, and verify errors have been detected
 
+#### Test Results
+![block diagram](test_results.png "block diagram")
 
 
 ## Logs
